@@ -1,20 +1,19 @@
-import Link from "next/link"; // BARU
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { events, rupiah } from "@/data/events";
+import { cookies } from "next/headers";
+import { rupiah } from "@/data/events";
+import { ambilEvent } from "@/data/ambil";
 import FormPesan from "@/components/FormPesan";
 import TombolFavorit from "@/components/TombolFavorit";
+import EventTerkait from "@/components/EventTerkait";
 
 export default async function Detail({ params }: PageProps<"/event/[id]">) {
   const { id } = await params;
-  const event = events.find((e) => e.id === Number(id));
+  const event = await ambilEvent(Number(id));
   if (!event) notFound();
 
   const sisa = event.kuota - event.terisi;
-
-  // BARU: kategori sama, tapi bukan event ini sendiri
-  const terkait = events.filter(
-    (e) => e.kategori === event.kategori && e.id !== event.id
-  );
+  const namaAwal = (await cookies()).get("nama")?.value ?? "";
 
   return (
     <article className="rounded-xl border bg-white p-6">
@@ -27,28 +26,15 @@ export default async function Detail({ params }: PageProps<"/event/[id]">) {
       </p>
       <p className="mt-4 text-xl font-semibold">{rupiah(event.harga)}</p>
       <p className="text-slate-600">Sisa {sisa} dari {event.kuota} tiket</p>
-      <TombolFavorit id={event.id} />
-      <FormPesan event={event} />
 
-      {/* BARU: Event terkait, di bawah formulir */}
-      <section className="mt-8 border-t pt-4">
-        <h2 className="text-lg font-semibold">Event terkait</h2>
-        {terkait.length === 0 ? (
-          <p className="mt-2 text-slate-500">Belum ada event terkait.</p>
-        ) : (
-          <ul className="mt-2 space-y-1">
-            {terkait.map((e) => (
-              <li key={e.id}>
-                <Link
-                  href={`/event/${e.id}`}
-                  className="text-blue-600 hover:underline"
-                >
-                  {e.judul}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+      <TombolFavorit id={event.id} />
+      <FormPesan event={event} namaAwal={namaAwal} />
+
+      <section className="mt-6">
+        <h2 className="font-semibold">Event terkait</h2>
+        <Suspense fallback={<p className="text-slate-400">Memuat event terkait...</p>}>
+          <EventTerkait event={event} />
+        </Suspense>
       </section>
     </article>
   );
