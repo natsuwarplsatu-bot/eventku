@@ -1,3 +1,6 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Tentang Eventku"};
 export default function Tentang() {
   return (
     <div>

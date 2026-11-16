@@ -7,15 +7,18 @@ const menu = [
   { href: "/", teks: "Beranda" },
   { href: "/event", teks: "Event" },
   { href: "/favorit", teks: "Favorit" },
+  { href: "/pesanan", teks: "Pesanan" },
   { href: "/tentang", teks: "Tentang" },
-  { href: "/Kontak", teks: "Kontak"},
+  { href: "/kontak", teks: "Kontak" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+
   return (
     <nav className="flex items-center gap-6 border-b bg-white px-6 py-3">
       <span className="text-lg font-bold text-blue-600">EventKu</span>
+
       {menu.map((m) => (
         <Link
           key={m.href}
