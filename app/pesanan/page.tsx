@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { pesanan } from "@/data/pesanan";
@@ -20,7 +21,7 @@ export default async function HalamanPesanan() {
 
       {namaSaya && (
         <p className="mb-3 text-sm text-slate-600">
-          Halo, {namaSaya}! Pesananmu ditandai "Kamu".
+          Halo, {namaSaya}! Pesananmu ditandai &quot;Kamu&quot;.
         </p>
       )}
 

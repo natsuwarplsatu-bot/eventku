@@ -1,50 +1,51 @@
+import type { Saringan } from "@/data/saring";
+
 type Props = {
-  cari: string;
-  onCari: (v: string) => void;
-  kategori: string;
-  onKategori: (v: string) => void;
+  s?: Saringan;
   daftarKategori: string[];
-  urut: string;
-  onUrut: (v: string) => void;
-  hanyaTersedia: boolean;
-  onHanyaTersedia: (v: boolean) => void;
-  hargaMaks: string;
-  onHargaMaks: (v: string) => void;
 };
 
 export default function KontrolKatalog({
-  cari,
-  onCari,
-  kategori,
-  onKategori,
+  s,
   daftarKategori,
-  urut,
-  onUrut,
-  hanyaTersedia,
-  onHanyaTersedia,
-  hargaMaks,
-  onHargaMaks,
 }: Props) {
+  const filter = s ?? {
+    cari: "",
+    kategori: "Semua",
+    urut: "tanggal",
+    sisa: false,
+    max: null,
+  };
+
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-3">
+    <form
+      action="/event"
+      method="GET"
+      className="mb-4 flex flex-wrap items-center gap-3"
+    >
       <input
-        value={cari}
-        onChange={(e) => onCari(e.target.value)}
-        placeholder="Cari event..."
+        type="text"
+        name="cari"
+        defaultValue={filter.cari}
+        placeholder="Cari event ..."
         className="rounded border bg-white px-3 py-2"
       />
+
       <select
-        value={kategori}
-        onChange={(e) => onKategori(e.target.value)}
+        name="kategori"
+        defaultValue={filter.kategori}
         className="rounded border bg-white px-3 py-2"
       >
         {daftarKategori.map((k) => (
-          <option key={k}>{k}</option>
+          <option key={k} value={k}>
+            {k}
+          </option>
         ))}
       </select>
+
       <select
-        value={urut}
-        onChange={(e) => onUrut(e.target.value)}
+        name="urut"
+        defaultValue={filter.urut}
         className="rounded border bg-white px-3 py-2"
       >
         <option value="tanggal">Tanggal terdekat</option>
@@ -52,22 +53,32 @@ export default function KontrolKatalog({
         <option value="mahal">Harga termahal</option>
         <option value="nama">Nama A-Z</option>
       </select>
-      <label className="flex items-center gap-2">
+
+      <label className="flex items-center gap-2 text-sm">
         <input
           type="checkbox"
-          checked={hanyaTersedia}
-          onChange={(e) => onHanyaTersedia(e.target.checked)}
+          name="sisa"
+          value="1"
+          defaultChecked={filter.sisa}
         />
         Hanya yang masih ada tiket
       </label>
+
       <input
         type="number"
+        name="max"
         min="0"
-        value={hargaMaks}
-        onChange={(e) => onHargaMaks(e.target.value)}
+        defaultValue={filter.max ?? ""}
         placeholder="Harga maksimal"
         className="w-40 rounded border bg-white px-3 py-2"
       />
-    </div>
+
+      <button
+        type="submit"
+        className="rounded bg-blue-600 px-4 py-2 text-white"
+      >
+        Terapkan
+      </button>
+    </form>
   );
 }

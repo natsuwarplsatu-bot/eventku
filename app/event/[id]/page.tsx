@@ -1,8 +1,9 @@
+
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
-import { events, rupiah } from "@/data/events";
+import { rupiah } from "@/data/events";
 import { ambilEvent } from "@/data/ambil";
 import FormPesan from "@/components/FormPesan";
 import TombolFavorit from "@/components/TombolFavorit";
@@ -27,11 +28,11 @@ export default async function Detail({ params }: PageProps<"/event/[id]">) {
   return (
     <article className="rounded-xl border bg-white p-6">
       <div className="relative mb-4 aspect-[40/21] w-full">
-        <Image 
+        <Image
           src={event.gambar ?? "/img/default.png"}
           alt={event.judul}
           fill
-          sizes="(max-width: 1024px) 100vw, 960px" 
+          sizes="(max-width: 1024px) 100vw, 960px"
           preload
           className="rounded-lg object-cover"
         />
