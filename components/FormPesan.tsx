@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useActionState, useState } from "react";
@@ -19,7 +20,11 @@ export default function FormPesan({
     isian: { nama: namaAwal, email: "" },
   };
 
-  const [hasil, kirim, sedangKirim] = useActionState(pesanTiket, awal);
+  const [hasil, kirim, sedangKirim] = useActionState(
+    pesanTiket,
+    awal
+  );
+
   const [jumlah, setJumlah] = useState(1);
 
   const sisa = event.kuota - event.terisi;
@@ -34,7 +39,9 @@ export default function FormPesan({
 
   return (
     <form action={kirim} className="mt-6 space-y-3 border-t pt-4">
-      <h2 className="text-lg font-semibold">Pesan Tiket</h2>
+      <h2 className="text-lg font-semibold">
+        Pesan Tiket
+      </h2>
 
       <input
         type="hidden"
