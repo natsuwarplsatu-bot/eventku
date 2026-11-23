@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState } from "react";
 
 import {
   simpanEvent,
@@ -36,46 +36,29 @@ export default function FormEvent({
     },
   };
 
-  const [isian, setIsian] = useState(awal.isian);
-
   const [hasil, kirim, sedangKirim] = useActionState<
     HasilEvent,
     FormData
   >(simpanEvent, awal);
 
-  // Mempertahankan nilai dari server setelah validasi.
-  useEffect(() => {
-    setIsian(hasil.isian);
-  }, [hasil]);
-
-  function ubahIsian(nama: string, nilai: string) {
-    setIsian((sebelumnya) => ({
-      ...sebelumnya,
-      [nama]: nilai,
-    }));
-  }
-
-  const kolom =
-    "block w-full rounded border px-3 py-2";
+  const kolom = "block w-full rounded border px-3 py-2";
 
   return (
     <form
+      key={JSON.stringify(hasil.isian)}
       action={kirim}
       className="max-w-lg space-y-3 rounded-xl border bg-white p-6"
     >
       <input
         type="hidden"
         name="id"
-        value={isian.id}
+        defaultValue={hasil.isian.id}
       />
 
       <div>
         <input
           name="judul"
-          value={isian.judul}
-          onChange={(e) =>
-            ubahIsian("judul", e.target.value)
-          }
+          defaultValue={hasil.isian.judul}
           placeholder="Judul"
           className={kolom}
         />
@@ -85,10 +68,7 @@ export default function FormEvent({
       <div>
         <input
           name="kategori"
-          value={isian.kategori}
-          onChange={(e) =>
-            ubahIsian("kategori", e.target.value)
-          }
+          defaultValue={hasil.isian.kategori}
           placeholder="Kategori"
           className={kolom}
         />
@@ -99,10 +79,7 @@ export default function FormEvent({
         <input
           name="tanggal"
           type="date"
-          value={isian.tanggal}
-          onChange={(e) =>
-            ubahIsian("tanggal", e.target.value)
-          }
+          defaultValue={hasil.isian.tanggal}
           className={kolom}
         />
         <Galat teks={hasil.galat.tanggal} />
@@ -111,10 +88,7 @@ export default function FormEvent({
       <div>
         <input
           name="lokasi"
-          value={isian.lokasi}
-          onChange={(e) =>
-            ubahIsian("lokasi", e.target.value)
-          }
+          defaultValue={hasil.isian.lokasi}
           placeholder="Lokasi"
           className={kolom}
         />
@@ -126,10 +100,7 @@ export default function FormEvent({
           <input
             name="harga"
             type="number"
-            value={isian.harga}
-            onChange={(e) =>
-              ubahIsian("harga", e.target.value)
-            }
+            defaultValue={hasil.isian.harga}
             placeholder="Harga"
             className={kolom}
           />
@@ -140,10 +111,7 @@ export default function FormEvent({
           <input
             name="kuota"
             type="number"
-            value={isian.kuota}
-            onChange={(e) =>
-              ubahIsian("kuota", e.target.value)
-            }
+            defaultValue={hasil.isian.kuota}
             placeholder="Kuota"
             className={kolom}
           />
@@ -154,10 +122,7 @@ export default function FormEvent({
       <div>
         <input
           name="gambar"
-          value={isian.gambar}
-          onChange={(e) =>
-            ubahIsian("gambar", e.target.value)
-          }
+          defaultValue={hasil.isian.gambar}
           placeholder="Gambar (boleh kosong)"
           className={kolom}
         />
